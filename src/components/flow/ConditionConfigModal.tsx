@@ -155,21 +155,21 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-6xl m-4 max-h-[90vh] flex flex-col">
-        <div className="flex justify-between items-center p-6 border-b">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-7xl max-h-[95vh] flex flex-col">
+        <div className="flex justify-between items-center p-6 border-b flex-shrink-0">
           <h2 className="text-xl font-semibold">{title}</h2>
           <Button variant="ghost" size="sm" onClick={onClose}>
             <X className="w-4 h-4" />
           </Button>
         </div>
 
-        <div className="flex-1 p-6 overflow-auto">
+        <div className="flex-1 p-6 overflow-auto min-h-0">
           <div className="space-y-4">
             {rules.map((rule, index) => (
-              <div key={rule.id} className="border rounded-lg p-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-sm text-gray-500 min-w-[20px]">{index + 1}</span>
+              <div key={rule.id} className="border rounded-lg p-4 bg-gray-50">
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-sm text-gray-500 min-w-[20px] font-medium">{index + 1}</span>
                   {index > 0 && (
                     <Select value={logicOperator} onValueChange={(value: 'AND' | 'OR') => setLogicOperator(value)}>
                       <SelectTrigger className="w-20">
@@ -183,98 +183,115 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
                   )}
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 items-center">
+                <div className="grid grid-cols-1 xl:grid-cols-5 gap-4 items-end">
                   {/* Field Selection */}
-                  <Select value={rule.field} onValueChange={(value) => updateRule(rule.id, { field: value })}>
-                    <SelectTrigger className="min-w-[200px]">
-                      <SelectValue placeholder="Select field" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <div className="px-2 py-1 text-xs font-semibold text-gray-500">Tags</div>
-                      {allFields.filter(f => f.category === 'tag').map((field) => (
-                        <SelectItem key={field.name} value={field.name}>
-                          <div className="flex items-center gap-2">
-                            <span>{field.name}</span>
-                            <span className={`text-xs px-1 rounded ${
-                              field.type === 'String' ? 'bg-blue-100 text-blue-800' :
-                              field.type === 'Number' ? 'bg-green-100 text-green-800' :
-                              field.type === 'Boolean' ? 'bg-purple-100 text-purple-800' :
-                              'bg-gray-100 text-gray-800'
-                            }`}>
-                              {field.type}
-                            </span>
-                          </div>
-                        </SelectItem>
-                      ))}
-                      <div className="px-2 py-1 text-xs font-semibold text-gray-500 border-t mt-1 pt-2">Variables</div>
-                      {allFields.filter(f => f.category === 'variable').map((field) => (
-                        <SelectItem key={field.name} value={field.name}>
-                          <div className="flex items-center gap-2">
-                            <span>{field.name}</span>
-                            <span className={`text-xs px-1 rounded ${
-                              field.type === 'String' ? 'bg-blue-100 text-blue-800' :
-                              field.type === 'Number' ? 'bg-green-100 text-green-800' :
-                              field.type === 'Boolean' ? 'bg-purple-100 text-purple-800' :
-                              'bg-gray-100 text-gray-800'
-                            }`}>
-                              {field.type}
-                            </span>
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Field</label>
+                    <Select value={rule.field} onValueChange={(value) => updateRule(rule.id, { field: value })}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select field" />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-60">
+                        <div className="px-2 py-1 text-xs font-semibold text-gray-500">Tags</div>
+                        {allFields.filter(f => f.category === 'tag').map((field) => (
+                          <SelectItem key={field.name} value={field.name}>
+                            <div className="flex items-center gap-2 w-full">
+                              <span className="truncate">{field.name}</span>
+                              <span className={`text-xs px-1 rounded flex-shrink-0 ${
+                                field.type === 'String' ? 'bg-blue-100 text-blue-800' :
+                                field.type === 'Number' ? 'bg-green-100 text-green-800' :
+                                field.type === 'Boolean' ? 'bg-purple-100 text-purple-800' :
+                                'bg-gray-100 text-gray-800'
+                              }`}>
+                                {field.type}
+                              </span>
+                            </div>
+                          </SelectItem>
+                        ))}
+                        {allFields.filter(f => f.category === 'variable').length > 0 && (
+                          <>
+                            <div className="px-2 py-1 text-xs font-semibold text-gray-500 border-t mt-1 pt-2">Variables</div>
+                            {allFields.filter(f => f.category === 'variable').map((field) => (
+                              <SelectItem key={field.name} value={field.name}>
+                                <div className="flex items-center gap-2 w-full">
+                                  <span className="truncate">{field.name}</span>
+                                  <span className={`text-xs px-1 rounded flex-shrink-0 ${
+                                    field.type === 'String' ? 'bg-blue-100 text-blue-800' :
+                                    field.type === 'Number' ? 'bg-green-100 text-green-800' :
+                                    field.type === 'Boolean' ? 'bg-purple-100 text-purple-800' :
+                                    'bg-gray-100 text-gray-800'
+                                  }`}>
+                                    {field.type}
+                                  </span>
+                                </div>
+                              </SelectItem>
+                            ))}
+                          </>
+                        )}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
                   {/* Operator Selection */}
-                  <Select 
-                    value={rule.operator} 
-                    onValueChange={(value) => updateRule(rule.id, { operator: value })}
-                    disabled={!rule.fieldType}
-                  >
-                    <SelectTrigger className="min-w-[150px]">
-                      <SelectValue placeholder="Operator" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {getOperatorsByType(rule.fieldType).map((operator) => (
-                        <SelectItem key={operator.value} value={operator.value}>
-                          {operator.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Operator</label>
+                    <Select 
+                      value={rule.operator} 
+                      onValueChange={(value) => updateRule(rule.id, { operator: value })}
+                      disabled={!rule.fieldType}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Operator" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {getOperatorsByType(rule.fieldType).map((operator) => (
+                          <SelectItem key={operator.value} value={operator.value}>
+                            {operator.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
                   {/* Value Input */}
-                  <div className="min-w-[150px]">
-                    {rule.fieldType === 'Boolean' ? (
-                      <Select value={rule.value} onValueChange={(value) => updateRule(rule.id, { value })}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select value" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="true">True</SelectItem>
-                          <SelectItem value="false">False</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    ) : (
-                      <Input
-                        value={rule.value}
-                        onChange={(e) => updateRule(rule.id, { value: e.target.value })}
-                        placeholder="Value"
-                        disabled={['is_empty', 'is_not_empty', 'empty', 'not_empty'].includes(rule.operator)}
-                      />
-                    )}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Value</label>
+                    <div className="w-full">
+                      {rule.fieldType === 'Boolean' ? (
+                        <Select value={rule.value} onValueChange={(value) => updateRule(rule.id, { value })}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select value" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="true">True</SelectItem>
+                            <SelectItem value="false">False</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      ) : (
+                        <Input
+                          value={rule.value}
+                          onChange={(e) => updateRule(rule.id, { value: e.target.value })}
+                          placeholder="Value"
+                          disabled={['is_empty', 'is_not_empty', 'empty', 'not_empty'].includes(rule.operator)}
+                          className="w-full"
+                        />
+                      )}
+                    </div>
                   </div>
 
                   {/* Remove Button */}
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => removeRule(rule.id)}
-                    disabled={rules.length === 1}
-                    className="text-red-600 hover:text-red-700 min-w-[40px]"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-transparent">Action</label>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removeRule(rule.id)}
+                      disabled={rules.length === 1}
+                      className="text-red-600 hover:text-red-700 w-full"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -286,7 +303,7 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
           </div>
         </div>
 
-        <div className="flex justify-end gap-3 p-6 border-t">
+        <div className="flex justify-end gap-3 p-6 border-t flex-shrink-0">
           <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
