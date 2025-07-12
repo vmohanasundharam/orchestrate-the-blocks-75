@@ -156,7 +156,7 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl m-4 max-h-[90vh] flex flex-col">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-6xl m-4 max-h-[90vh] flex flex-col">
         <div className="flex justify-between items-center p-6 border-b">
           <h2 className="text-xl font-semibold">{title}</h2>
           <Button variant="ghost" size="sm" onClick={onClose}>
@@ -183,10 +183,10 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
                   )}
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-2 items-center">
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 items-center">
                   {/* Field Selection */}
                   <Select value={rule.field} onValueChange={(value) => updateRule(rule.id, { field: value })}>
-                    <SelectTrigger>
+                    <SelectTrigger className="min-w-[200px]">
                       <SelectValue placeholder="Select field" />
                     </SelectTrigger>
                     <SelectContent>
@@ -231,7 +231,7 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
                     onValueChange={(value) => updateRule(rule.id, { operator: value })}
                     disabled={!rule.fieldType}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="min-w-[150px]">
                       <SelectValue placeholder="Operator" />
                     </SelectTrigger>
                     <SelectContent>
@@ -244,7 +244,7 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
                   </Select>
 
                   {/* Value Input */}
-                  <div className="flex-1">
+                  <div className="min-w-[150px]">
                     {rule.fieldType === 'Boolean' ? (
                       <Select value={rule.value} onValueChange={(value) => updateRule(rule.id, { value })}>
                         <SelectTrigger>
@@ -271,7 +271,7 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
                     size="sm"
                     onClick={() => removeRule(rule.id)}
                     disabled={rules.length === 1}
-                    className="text-red-600 hover:text-red-700"
+                    className="text-red-600 hover:text-red-700 min-w-[40px]"
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>
