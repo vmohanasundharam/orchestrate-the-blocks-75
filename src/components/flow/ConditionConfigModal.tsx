@@ -156,7 +156,7 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-7xl max-h-[95vh] flex flex-col">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-[90vw] max-h-[95vh] flex flex-col">
         <div className="flex justify-between items-center p-6 border-b flex-shrink-0">
           <h2 className="text-xl font-semibold">{title}</h2>
           <Button variant="ghost" size="sm" onClick={onClose}>
@@ -164,15 +164,15 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
           </Button>
         </div>
 
-        <div className="flex-1 p-6 overflow-auto min-h-0">
-          <div className="space-y-4">
+        <div className="flex-1 p-8 overflow-auto min-h-0">
+          <div className="space-y-6">
             {rules.map((rule, index) => (
-              <div key={rule.id} className="border rounded-lg p-4 bg-gray-50">
-                <div className="flex items-center gap-2 mb-4">
+              <div key={rule.id} className="border rounded-lg p-6 bg-gray-50">
+                <div className="flex items-center gap-4 mb-6">
                   <span className="text-sm text-gray-500 min-w-[20px] font-medium">{index + 1}</span>
                   {index > 0 && (
                     <Select value={logicOperator} onValueChange={(value: 'AND' | 'OR') => setLogicOperator(value)}>
-                      <SelectTrigger className="w-20">
+                      <SelectTrigger className="w-24">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -183,12 +183,12 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
                   )}
                 </div>
 
-                <div className="grid grid-cols-1 xl:grid-cols-5 gap-4 items-end">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 items-end">
                   {/* Field Selection */}
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <label className="text-sm font-medium text-gray-700">Field</label>
                     <Select value={rule.field} onValueChange={(value) => updateRule(rule.id, { field: value })}>
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger className="w-full min-w-[200px]">
                         <SelectValue placeholder="Select field" />
                       </SelectTrigger>
                       <SelectContent className="max-h-60">
@@ -233,14 +233,14 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
                   </div>
 
                   {/* Operator Selection */}
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <label className="text-sm font-medium text-gray-700">Operator</label>
                     <Select 
                       value={rule.operator} 
                       onValueChange={(value) => updateRule(rule.id, { operator: value })}
                       disabled={!rule.fieldType}
                     >
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger className="w-full min-w-[150px]">
                         <SelectValue placeholder="Operator" />
                       </SelectTrigger>
                       <SelectContent>
@@ -254,12 +254,12 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
                   </div>
 
                   {/* Value Input */}
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <label className="text-sm font-medium text-gray-700">Value</label>
                     <div className="w-full">
                       {rule.fieldType === 'Boolean' ? (
                         <Select value={rule.value} onValueChange={(value) => updateRule(rule.id, { value })}>
-                          <SelectTrigger>
+                          <SelectTrigger className="min-w-[120px]">
                             <SelectValue placeholder="Select value" />
                           </SelectTrigger>
                           <SelectContent>
@@ -273,21 +273,21 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
                           onChange={(e) => updateRule(rule.id, { value: e.target.value })}
                           placeholder="Value"
                           disabled={['is_empty', 'is_not_empty', 'empty', 'not_empty'].includes(rule.operator)}
-                          className="w-full"
+                          className="w-full min-w-[150px]"
                         />
                       )}
                     </div>
                   </div>
 
                   {/* Remove Button */}
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <label className="text-sm font-medium text-transparent">Action</label>
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => removeRule(rule.id)}
                       disabled={rules.length === 1}
-                      className="text-red-600 hover:text-red-700 w-full"
+                      className="text-red-600 hover:text-red-700 w-full min-w-[80px]"
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
