@@ -4,6 +4,7 @@ import { X, Plus, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { useGlobalVariables } from '@/contexts/GlobalVariablesContext';
 
 interface Tag {
@@ -86,6 +87,7 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
   const { variables } = useGlobalVariables();
   const [rules, setRules] = useState<ConditionRule[]>([]);
   const [logicOperator, setLogicOperator] = useState<'AND' | 'OR'>('AND');
+  const [criteriaPattern, setCriteriaPattern] = useState<string>('');
 
   const allFields = [
     ...mockTags.map(tag => ({ name: `#${tag.key}`, type: tag.type, category: 'tag' })),
@@ -101,8 +103,21 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
         operator: '',
         value: ''
       }]);
+      setCriteriaPattern('(1)');
     }
   }, [isOpen, initialCondition]);
+
+  // Update criteria pattern when rules change
+  useEffect(() => {
+    if (rules.length > 0) {
+      if (rules.length === 1) {
+        setCriteriaPattern('(1)');
+      } else {
+        const ruleNumbers = rules.map((_, index) => `(${index + 1})`);
+        setCriteriaPattern(ruleNumbers.join(` ${logicOperator} `));
+      }
+    }
+  }, [rules.length, logicOperator]);
 
   const addRule = () => {
     setRules([...rules, {
@@ -296,10 +311,30 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
               </div>
             ))}
 
-            <Button onClick={addRule} variant="outline" className="w-full">
+            <Button onClick={addRule} variant="outline" className="w-full border-dashed border-2 py-8">
               <Plus className="w-4 h-4 mr-2" />
-              Add Rule
+              Add Another Rule
             </Button>
+
+            {/* Criteria Pattern Section */}
+            <div className="space-y-4 mt-8">
+              <h3 className="text-lg font-semibold text-gray-800">Criteria Pattern (Rule Logic)</h3>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">
+                  Criteria Pattern
+                </label>
+                <p className="text-sm text-gray-500">
+                  Edit the pattern to change how rules are combined. Use (1), (2), etc. to reference rule numbers.
+                </p>
+                <Textarea
+                  value={criteriaPattern}
+                  onChange={(e) => setCriteriaPattern(e.target.value)}
+                  placeholder="(1) AND (2) OR (3)"
+                  className="min-h-[80px] font-mono text-sm"
+                  rows={3}
+                />
+              </div>
+            </div>
           </div>
         </div>
 
