@@ -171,7 +171,7 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-[90vw] max-h-[95vh] flex flex-col">
+      <div className="bg-white rounded-lg shadow-xl w-full max-w-[1200px] max-h-[95vh] flex flex-col">
         <div className="flex justify-between items-center p-6 border-b flex-shrink-0">
           <h2 className="text-xl font-semibold">{title}</h2>
           <Button variant="ghost" size="sm" onClick={onClose}>
@@ -198,9 +198,9 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
                   )}
                 </div>
 
-                <div className="space-y-6 lg:space-y-0 lg:grid lg:grid-cols-4 lg:gap-6 lg:items-start">
+                <div className="grid grid-cols-12 gap-4 items-start">
                   {/* Field Selection */}
-                  <div className="space-y-3">
+                  <div className="col-span-3 space-y-2">
                     <label className="text-sm font-medium text-gray-700">Field</label>
                     <Select value={rule.field} onValueChange={(value) => updateRule(rule.id, { field: value })}>
                       <SelectTrigger className="w-full">
@@ -248,7 +248,7 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
                   </div>
 
                   {/* Operator Selection */}
-                  <div className="space-y-3">
+                  <div className="col-span-3 space-y-2">
                     <label className="text-sm font-medium text-gray-700">Operator</label>
                     <Select 
                       value={rule.operator} 
@@ -269,7 +269,7 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
                   </div>
 
                   {/* Value Input */}
-                  <div className="space-y-3">
+                  <div className="col-span-4 space-y-2">
                     <label className="text-sm font-medium text-gray-700">Value</label>
                     <div className="w-full">
                       {rule.fieldType === 'Boolean' ? (
@@ -286,7 +286,7 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
                         <Input
                           value={rule.value}
                           onChange={(e) => updateRule(rule.id, { value: e.target.value })}
-                          placeholder="Value"
+                          placeholder="Enter value"
                           disabled={['is_empty', 'is_not_empty', 'empty', 'not_empty'].includes(rule.operator)}
                           className="w-full"
                         />
@@ -295,16 +295,16 @@ export const ConditionConfigModal: React.FC<ConditionConfigModalProps> = ({
                   </div>
 
                   {/* Remove Button */}
-                  <div className="space-y-3">
-                    <label className="text-sm font-medium text-transparent lg:text-gray-700">Action</label>
+                  <div className="col-span-2 space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Action</label>
                     <Button
-                      variant="ghost"
+                      variant="outline"
                       size="sm"
                       onClick={() => removeRule(rule.id)}
                       disabled={rules.length === 1}
-                      className="text-red-600 hover:text-red-700 w-full"
+                      className="text-red-600 hover:text-red-700 hover:bg-red-50 w-full"
                     >
-                      <Trash2 className="w-4 h-4 mr-2" />
+                      <Trash2 className="w-4 h-4 mr-1" />
                       Remove
                     </Button>
                   </div>
